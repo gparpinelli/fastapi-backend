@@ -1,12 +1,10 @@
 import typer
 import uvicorn
-from sqlmodel import Session, select
+from sqlalchemy import Session, select
 
 from .app import app
 from .config import settings
-from .db import create_db_and_tables, engine
-from .models.content import Content
-from .security import User
+from .db import engine
 
 cli = typer.Typer(name="fastapi_backend API")
 
@@ -29,31 +27,15 @@ def run(
 
 
 @cli.command()
-def create_user(username: str, password: str, superuser: bool = False):
-    """Create user"""
-    create_db_and_tables(engine)
-    with Session(engine) as session:
-        user = User(username=username, password=password, superuser=superuser)
-        session.add(user)
-        session.commit()
-        session.refresh(user)
-        typer.echo(f"created {username} user")
-        return user
-
-
-@cli.command()
 def shell():  # pragma: no cover
     """Opens an interactive shell with objects auto imported"""
     _vars = {
         "app": app,
         "settings": settings,
-        "User": User,
         "engine": engine,
         "cli": cli,
-        "create_user": create_user,
         "select": select,
         "session": Session(engine),
-        "Content": Content,
     }
     typer.echo(f"Auto imports: {list(_vars.keys())}")
     try:

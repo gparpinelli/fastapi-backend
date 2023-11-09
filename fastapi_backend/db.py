@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlmodel import Session, SQLModel, create_engine
+from sqlalchemy import Session, SQLAlchemy, create_engine
 
 from .config import settings
 
@@ -11,7 +11,7 @@ engine = create_engine(
 
 
 def create_db_and_tables(engine):
-    SQLModel.metadata.create_all(engine)
+    SQLAlchemy.metadata.create_all(engine)
 
 
 def get_session():

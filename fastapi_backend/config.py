@@ -1,60 +1,11 @@
-import os
+from pathlib import Path
 
-from dynaconf import Dynaconf
+from pydantic import BaseSettings
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-
-settings = Dynaconf(
-    envvar_prefix="fastapi_backend",
-    preload=[os.path.join(HERE, "default.toml")],
-    settings_files=["settings.toml", ".secrets.toml"],
-    environments=["development", "production", "testing"],
-    env_switcher="fastapi_backend_env",
-    load_dotenv=False,
-)
+HERE = Path(__file__).resolve().parent
 
 
-"""
-# How to use this application settings
+class Settings(BaseSettings):
+    pass
 
-```
-from fastapi_backend.config import settings
-```
-
-## Acessing variables
-
-```
-settings.get("SECRET_KEY", default="sdnfjbnfsdf")
-settings["SECRET_KEY"]
-settings.SECRET_KEY
-settings.db.uri
-settings["db"]["uri"]
-settings["db.uri"]
-settings.DB__uri
-```
-
-## Modifying variables
-
-### On files
-
-settings.toml
-```
-[development]
-KEY=value
-```
-
-### As environment variables
-```
-export fastapi_backend_KEY=value
-export fastapi_backend_KEY="@int 42"
-export fastapi_backend_KEY="@jinja {{ this.db.uri }}"
-export fastapi_backend_DB__uri="@jinja {{ this.db.uri | replace('db', 'data') }}"
-```
-
-### Switching environments
-```
-fastapi_backend_ENV=production fastapi_backend run
-```
-
-Read more on https://dynaconf.com
-"""
+settings = Settings()

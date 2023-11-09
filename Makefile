@@ -9,7 +9,6 @@ help:             ## Show the help.
 	@echo "Targets:"
 	@fgrep "##" Makefile | fgrep -v fgrep
 
-
 .PHONY: show
 show:             ## Show the current environment.
 	@echo "Current environment:"
@@ -24,17 +23,9 @@ install:          ## Install the project in dev mode.
 	@echo "Don't forget to run 'make virtualenv' if you got errors."
 	$(ENV_PREFIX)pip install -e .[test]
 
-.PHONY: fmt
-fmt:              ## Format code using black & isort.
-	$(ENV_PREFIX)isort fastapi_backend/
-	$(ENV_PREFIX)black -l 79 fastapi_backend/
-	$(ENV_PREFIX)black -l 79 tests/
-
 .PHONY: lint
-lint:             ## Run pep8, black, mypy linters.
-	$(ENV_PREFIX)flake8 fastapi_backend/
-	$(ENV_PREFIX)black -l 79 --check fastapi_backend/
-	$(ENV_PREFIX)black -l 79 --check tests/
+fmt:              ## Format code using black & isort.
+	$(ENV_PREFIX)ruff --fix fastapi_backend/
 	$(ENV_PREFIX)mypy --ignore-missing-imports fastapi_backend/
 
 .PHONY: test
@@ -87,12 +78,6 @@ release:          ## Create a new tag for release.
 	@git push -u origin HEAD --tags
 	@echo "Github Actions will detect the new tag and release the new version."
 
-.PHONY: docs
-docs:             ## Build the documentation.
-	@echo "building documentation ..."
-	@$(ENV_PREFIX)mkdocs build
-	URL="site/index.html"; xdg-open $$URL || sensible-browser $$URL || x-www-browser $$URL || gnome-open $$URL  || open $$URL
-
 .PHONY: switch-to-poetry
 switch-to-poetry: ## Switch to poetry package manager.
 	@echo "Switching to poetry ..."
@@ -110,10 +95,6 @@ switch-to-poetry: ## Switch to poetry package manager.
 	@mv setup.py .github/backup
 	@echo "You have switched to https://python-poetry.org/ package manager."
 	@echo "Please run 'poetry shell' or 'poetry run fastapi_backend'"
-
-.PHONY: init
-init:             ## Initialize the project based on an application template.
-	@./.github/init.sh
 
 .PHONY: shell
 shell:            ## Open a shell in the project.
@@ -139,8 +120,3 @@ docker-ps: 	  ## Bring down docker dev environment
 .PHONY: docker-log
 docker-logs: 	  ## Bring down docker dev environment
 	@docker-compose -f docker-compose-dev.yaml -p fastapi_backend logs -f app
-
-# This project has been generated from rochacbruno/fastapi-project-template
-# __author__ = 'rochacbruno'
-# __repo__ = https://github.com/rochacbruno/fastapi-project-template
-# __sponsor__ = https://github.com/sponsors/rochacbruno/

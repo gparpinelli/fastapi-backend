@@ -1,6 +1,5 @@
 """Python setup.py for fastapi_backend package"""
-import io
-import os
+from pathlib import Path
 from setuptools import find_packages, setup
 
 
@@ -13,8 +12,7 @@ def read(*paths, **kwargs):
     """
 
     content = ""
-    with io.open(
-        os.path.join(os.path.dirname(__file__), *paths),
+    with Path(__file__).parent.joinpath(*paths).open(
         encoding=kwargs.get("encoding", "utf8"),
     ) as open_file:
         content = open_file.read().strip()
@@ -31,7 +29,7 @@ def read_requirements(path):
 
 setup(
     name="fastapi_backend",
-    version=read("fastapi_backend", "VERSION"),
+    version=read("src", "VERSION"),
     description="Awesome fastapi_backend created by gparpinelli",
     url="https://github.com/gparpinelli/fastapi-backend/",
     long_description=read("README.md"),

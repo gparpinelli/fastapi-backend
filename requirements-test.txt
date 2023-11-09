@@ -1,12 +1,8 @@
 # This requirements are for development and testing only, not for production.
 pytest
-coverage
-flake8
-black
-isort
 pytest-cov
+coverage
 codecov
 mypy
 gitchangelog
-mkdocs
-pytest-picked
+ruff

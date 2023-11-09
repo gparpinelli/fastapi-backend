@@ -1,5 +1,4 @@
-import io
-import os
+from pathlib import Path
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
@@ -8,14 +7,16 @@ from .config import settings
 from .db import create_db_and_tables, engine
 from .routes import main_router
 
-
 def read(*paths, **kwargs):
     """Read the contents of a text file safely.
-    >>> read("VERSION")
+    >>> read("fastapi_backend", "VERSION")
+    '0.1.0'
+    >>> read("README.md")
+    ...
     """
+
     content = ""
-    with io.open(
-        os.path.join(os.path.dirname(__file__), *paths),
+    with Path(__file__).parent.joinpath(*paths).open(
         encoding=kwargs.get("encoding", "utf8"),
     ) as open_file:
         content = open_file.read().strip()
@@ -30,16 +31,6 @@ app = FastAPI(
     title="fastapi_backend",
     description=description,
     version=read("VERSION"),
-    terms_of_service="http://fastapi_backend.com/terms/",
-    contact={
-        "name": "gparpinelli",
-        "url": "http://fastapi_backend.com/contact/",
-        "email": "gparpinelli@fastapi_backend.com",
-    },
-    license_info={
-        "name": "The Unlicense",
-        "url": "https://unlicense.org",
-    },
 )
 
 if settings.server and settings.server.get("cors_origins", None):
