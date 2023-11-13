@@ -42,7 +42,7 @@ if settings.server and settings.server.get("cors_origins", None):
         allow_headers=settings.get("server.cors_allow_headers", ["*"]),
     )
 
-app.include_router(main_router)
+app.include_router(main_router, prefix="/api", tags=["api"])
 
 
 @app.on_event("startup")
