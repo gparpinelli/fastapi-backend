@@ -29,7 +29,7 @@ def read_requirements(path):
 
 setup(
     name="fastapi_backend",
-    version=read("src", "VERSION"),
+    version=read("fastapi_backend", "VERSION"),
     description="Awesome fastapi_backend created by gparpinelli",
     url="https://github.com/gparpinelli/fastapi-backend/",
     long_description=read("README.md"),
