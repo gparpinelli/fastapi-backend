@@ -83,7 +83,7 @@ switch-to-poetry: ## Switch to poetry package manager.
 	@echo "Switching to poetry ..."
 	@if ! poetry --version > /dev/null; then echo 'poetry is required, install from https://python-poetry.org/'; exit 1; fi
 	@rm -rf .venv
-	@poetry init --no-interaction --name=a_flask_test --author=rochacbruno
+	@poetry init --no-interaction --name=fastapi_backend --author=gparpinelli
 	@echo "" >> pyproject.toml
 	@echo "[tool.poetry.scripts]" >> pyproject.toml
 	@echo "fastapi_backend = 'fastapi_backend.__main__:main'" >> pyproject.toml
